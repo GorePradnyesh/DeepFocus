@@ -14,6 +14,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.updateUI()
     }
+    
+    override func viewDidLayoutSubviews() {
+        if(self.imageView.image != nil){
+            self.adjustHeight()
+        }
+    }
 
     // MARK: private members
     var imageView = UIImageView()
@@ -49,6 +55,8 @@ class ViewController: UIViewController {
                 let height = width / self.imageView.image!.aspectRatio
                 self.imageView.frame = CGRect(x:0, y:0, width:width, height:height);
             }
+        }else{
+            self.imageView.frame = CGRectZero;
         }
     } // end of adjust width
 }
