@@ -26,7 +26,6 @@
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JAE-Ma-Tdx">
                                 <rect key="frame" x="16" y="66" width="568" height="526"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -36,9 +35,13 @@
                             <constraint firstItem="qHG-50-7fh" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="Ss4-Es-wa0"/>
                             <constraint firstItem="JAE-Ma-Tdx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="i2W-JB-EjL"/>
                             <constraint firstItem="JAE-Ma-Tdx" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="jhy-K2-mNV"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="JAE-Ma-Tdx" secondAttribute="bottom" constant="8" id="mYg-w7-v2c"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="JAE-Ma-Tdx" secondAttribute="bottom" constant="8" symbolic="YES" id="mYg-w7-v2c"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="capture" destination="qHG-50-7fh" id="UU1-SR-ZG5"/>
+                        <outlet property="imageViewContainer" destination="JAE-Ma-Tdx" id="Xoz-Ow-WWa"/>
+                    </connections>
                 </viewController>
             </objects>
         </scene>
