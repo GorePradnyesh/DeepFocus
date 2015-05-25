@@ -13,6 +13,7 @@
 		3FBD86D51B124C4A001529E5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FBD86D41B124C4A001529E5 /* Images.xcassets */; };
 		3FBD86D81B124C4A001529E5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FBD86D61B124C4A001529E5 /* LaunchScreen.xib */; };
 		3FBD86E41B124C4B001529E5 /* DeepFocusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86E31B124C4B001529E5 /* DeepFocusTests.swift */; };
+		3FBD86FC1B12B691001529E5 /* CaptureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86FB1B12B691001529E5 /* CaptureController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		3FBD86DD1B124C4B001529E5 /* DeepFocusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeepFocusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FBD86E21B124C4B001529E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FBD86E31B124C4B001529E5 /* DeepFocusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepFocusTests.swift; sourceTree = "<group>"; };
+		3FBD86FB1B12B691001529E5 /* CaptureController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 				3FBD86D41B124C4A001529E5 /* Images.xcassets */,
 				3FBD86D61B124C4A001529E5 /* LaunchScreen.xib */,
 				3FBD86CB1B124C4A001529E5 /* Supporting Files */,
+				3FBD86FB1B12B691001529E5 /* CaptureController.swift */,
 			);
 			path = DeepFocus;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FBD86FC1B12B691001529E5 /* CaptureController.swift in Sources */,
 				3FBD86D01B124C4A001529E5 /* ViewController.swift in Sources */,
 				3FBD86CE1B124C4A001529E5 /* AppDelegate.swift in Sources */,
 			);

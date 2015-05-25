@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MobileCoreServices
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,13 +24,26 @@ class ViewController: UIViewController {
 
     // MARK: private members
     var imageView = UIImageView()
+    var cameraPicker = UIImagePickerController();
 
+    
+    // MARK: Outlts and Actions
     @IBOutlet weak var capture: UIButton!
 
     @IBOutlet weak var imageViewContainer: UIView!{
         didSet{
             imageViewContainer.addSubview(imageView);
         }
+    }
+    
+    @IBAction func takePhoto(sender: AnyObject) {
+        self.cameraPicker.delegate = self;
+        if(UIImagePickerController.isSourceTypeAvailable(.Camera)){
+            self.cameraPicker.sourceType = .Camera
+        }
+        self.cameraPicker.mediaTypes = [kUTTypeImage];
+        self.cameraPicker.allowsEditing = true;
+        presentViewController(self.cameraPicker, animated:true, completion:nil);
     }
     
     // MARK: private functions 
@@ -59,6 +73,21 @@ class ViewController: UIViewController {
             self.imageView.frame = CGRectZero;
         }
     } // end of adjust width
+    
+    
+    // MARK: UIImagePickerControllerDelegate methods
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        var image = info[UIImagePickerControllerEditedImage] as? UIImage;
+        if(image == nil){
+            image = info[UIImagePickerControllerOriginalImage] as? UIImage;
+        }
+        self.imageView.image = image;
+        adjustHeight();
+        dismissViewControllerAnimated(true, completion: nil);
+    }
+    
+
 }
 
 extension UIImage{
