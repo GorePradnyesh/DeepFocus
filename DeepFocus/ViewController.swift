@@ -25,6 +25,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
     // MARK: private members
     var imageView = UIImageView()
     var cameraPicker = UIImagePickerController();
+    var customImagePicker = UIImagePickerController();
 
     
     // MARK: Outlts and Actions
@@ -37,14 +38,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
     }
     
     @IBAction func takePhoto(sender: AnyObject) {
-        self.cameraPicker.delegate = self;
-        if(UIImagePickerController.isSourceTypeAvailable(.Camera)){
-            self.cameraPicker.sourceType = .Camera
-        }
-        self.cameraPicker.mediaTypes = [kUTTypeImage];
-        self.cameraPicker.allowsEditing = true;
-        presentViewController(self.cameraPicker, animated:true, completion:nil);
+        self.initOverlayControlsForCamera();        
     }
+    
     
     // MARK: private functions 
     func updateUI(){
@@ -75,7 +71,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
     } // end of adjust width
     
     
-    // MARK: UIImagePickerControllerDelegate methods
+    // MARK: Camera controller methods
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         var image = info[UIImagePickerControllerEditedImage] as? UIImage;
@@ -86,7 +82,61 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
         adjustHeight();
         dismissViewControllerAnimated(true, completion: nil);
     }
+
     
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil);
+    }
+    
+    
+    func initOverlayControlsForCamera(){
+        var toolBar =   UIToolbar(frame:CGRectMake(0, self.view.frame.height-54, self.view.frame.width, 55));
+        toolBar.barStyle = UIBarStyle.BlackTranslucent;
+        
+        let cancelPictureItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelPicture");
+        let shootPictureItem = UIBarButtonItem(barButtonSystemItem: .Camera, target: self, action: "shootPicture");
+        let flexibleSpaceItem_1 = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil);
+        let flexibleSpaceItem_2 = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil);
+        let flexibleSpaceItem_3 = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil);
+    
+        let items  = [cancelPictureItem, flexibleSpaceItem_1, shootPictureItem, flexibleSpaceItem_2, flexibleSpaceItem_3];
+        toolBar.setItems(items, animated: false);
+        
+        let overlayView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height - 44));
+        overlayView.opaque = false;
+        overlayView.backgroundColor = UIColor.clearColor();
+        
+        let cameraView = UIView(frame: self.view.bounds);
+        cameraView.addSubview(overlayView);
+        cameraView.addSubview(toolBar);
+        
+        // set the delegate
+        self.customImagePicker.delegate = self;
+        if(UIImagePickerController.isSourceTypeAvailable(.Camera)){
+            self.customImagePicker.sourceType = .Camera
+        }else{
+            NSLog("Camera not found");
+            return;
+        }
+        self.customImagePicker.mediaTypes = [kUTTypeImage];
+        self.customImagePicker.allowsEditing = true;
+        
+        // hide the camera controls 
+        self.customImagePicker.showsCameraControls = false;
+        self.customImagePicker.cameraOverlayView = cameraView;
+        
+        presentViewController(self.customImagePicker, animated:true, completion:nil);
+    }
+    
+    
+    func shootPicture(){
+        self.customImagePicker.takePicture();
+    }
+    
+    
+    func cancelPicture(){
+        dismissViewControllerAnimated(true, completion: nil);
+    }
 
 }
 
