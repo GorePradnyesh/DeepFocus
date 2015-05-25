@@ -9,11 +9,25 @@
 import UIKit
 import MobileCoreServices
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavigationControllerDelegate {
+import AVFoundation
 
+class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavigationControllerDelegate {
+    // MARK: private members
+    var imageView = UIImageView()
+    var cameraPicker = UIImagePickerController();
+    var customImagePicker = UIImagePickerController();
+    var captureSession = AVCaptureSession();
+    
+    // Optional to store the capture device if present
+    var captureDevice : AVCaptureDevice?;
+    var previewLayer: AVCaptureVideoPreviewLayer?;
+    
+
+    // MARK: View overrides
     override func viewDidLoad() {
-        super.viewDidLoad()
-        self.updateUI()
+        super.viewDidLoad();
+        self.updateUI();
+        self.initCaptureDevice();
     }
     
     override func viewDidLayoutSubviews() {
@@ -21,11 +35,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
             self.adjustHeight()
         }
     }
-
-    // MARK: private members
-    var imageView = UIImageView()
-    var cameraPicker = UIImagePickerController();
-    var customImagePicker = UIImagePickerController();
 
     
     // MARK: Outlts and Actions
@@ -38,11 +47,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
     }
     
     @IBAction func takePhoto(sender: AnyObject) {
-        self.initOverlayControlsForCamera();        
+        //self.initOverlayControlsForCamera();
+        self.beginSession();
     }
     
     
-    // MARK: private functions 
+    // MARK: private helper functions
     func updateUI(){
         var urlString:NSString = "http://globe-views.com/dcim/dreams/car/car-03.jpg";
         var URL = NSURL(string:urlString);
@@ -73,8 +83,37 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
     
     // MARK: Camera controller methods
     
+    func initCaptureDevice(){
+        let devices = AVCaptureDevice.devices();
+        for device in devices{
+            if(device.hasMediaType(AVMediaTypeVideo)){
+                if(device.position == AVCaptureDevicePosition.Back){
+                    self.captureDevice = device as? AVCaptureDevice;
+                }
+            }
+        }
+        if(self.captureDevice == nil){
+            NSLog("Could not find camera for device")
+        }
+    }
+    
+    func beginSession(){
+        var error:NSError? = nil;
+        self.captureSession.addInput(AVCaptureDeviceInput(device:self.captureDevice, error:&error))
+        if error != nil {
+            println("error: \(error?.localizedDescription)")
+        }
+        
+        self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession);
+        self.view.layer.addSublayer(self.previewLayer);
+        self.previewLayer?.frame = self.view.layer.frame;
+        self.captureSession.startRunning();
+    }
+    
+    
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         var image = info[UIImagePickerControllerEditedImage] as? UIImage;
+        
         if(image == nil){
             image = info[UIImagePickerControllerOriginalImage] as? UIImage;
         }
