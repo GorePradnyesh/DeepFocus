@@ -37,7 +37,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
     }
 
     
-    // MARK: Outlts and Actions
+    // MARK: Outlets and Actions
     @IBOutlet weak var capture: UIButton!
 
     @IBOutlet weak var imageViewContainer: UIView!{
@@ -98,6 +98,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
     }
     
     func beginSession(){
+        self.configureDevice()
         var error:NSError? = nil;
         self.captureSession.addInput(AVCaptureDeviceInput(device:self.captureDevice, error:&error))
         if error != nil {
@@ -107,6 +108,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
         self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession);
         self.view.layer.addSublayer(self.previewLayer);
         self.previewLayer?.frame = self.view.layer.frame;
+        initOverlayControlsForCamera();
+        
         self.captureSession.startRunning();
     }
     
@@ -146,27 +149,29 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
         overlayView.backgroundColor = UIColor.clearColor();
         
         let cameraView = UIView(frame: self.view.bounds);
-        cameraView.addSubview(overlayView);
-        cameraView.addSubview(toolBar);
-        
-        // set the delegate
-        self.customImagePicker.delegate = self;
-        if(UIImagePickerController.isSourceTypeAvailable(.Camera)){
-            self.customImagePicker.sourceType = .Camera
-        }else{
-            NSLog("Camera not found");
-            return;
-        }
-        self.customImagePicker.mediaTypes = [kUTTypeImage];
-        self.customImagePicker.allowsEditing = true;
-        
-        // hide the camera controls 
-        self.customImagePicker.showsCameraControls = false;
-        self.customImagePicker.cameraOverlayView = cameraView;
-        
-        presentViewController(self.customImagePicker, animated:true, completion:nil);
+        self.view.addSubview(overlayView);
+        self.view.addSubview(toolBar);
     }
     
+    // MARK : Capture Device Actions and Controls
+    func configureDevice() {
+        if let device = self.captureDevice {
+            device.lockForConfiguration(nil)
+            device.focusMode = .Locked
+            device.unlockForConfiguration()
+        }
+    }
+    
+    func focusTo(value: Float){
+        if let device = self.captureDevice {
+            if(device.lockForConfiguration(nil)){
+                device.setFocusModeLockedWithLensPosition(value, completionHandler: { (time) -> Void in
+                })
+                device.unlockForConfiguration();
+            }
+        }
+    }
+
     
     func shootPicture(){
         self.customImagePicker.takePicture();
@@ -174,8 +179,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
     
     
     func cancelPicture(){
-        dismissViewControllerAnimated(true, completion: nil);
+        self.captureSession.stopRunning()
     }
+    
+    
+    // Touches which control the focus ( _temporary functions_ )
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        let screenWidth = UIScreen.mainScreen().bounds.size.width;
+        let anyTouch = touches.anyObject() as UITouch;
+        let touchPercentage = anyTouch.locationInView(self.view).x / screenWidth;
+        self.focusTo(Float(touchPercentage));
+    }
+
+    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+        touchesBegan(touches, withEvent: event);
+    }
+    
 
 }
 
