@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F094C5D1B1432580091FD1E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F094C5C1B1432580091FD1E /* ImageIO.framework */; };
+		3F094C5F1B1432740091FD1E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F094C5E1B1432740091FD1E /* CoreMedia.framework */; };
+		3F094C611B14327B0091FD1E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F094C601B14327B0091FD1E /* CoreVideo.framework */; };
 		3FBD86CE1B124C4A001529E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86CD1B124C4A001529E5 /* AppDelegate.swift */; };
 		3FBD86D01B124C4A001529E5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86CF1B124C4A001529E5 /* ViewController.swift */; };
 		3FBD86D31B124C4A001529E5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FBD86D11B124C4A001529E5 /* Main.storyboard */; };
@@ -27,6 +30,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F094C5C1B1432580091FD1E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		3F094C5E1B1432740091FD1E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		3F094C601B14327B0091FD1E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		3FBD86C81B124C4A001529E5 /* DeepFocus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeepFocus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FBD86CC1B124C4A001529E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FBD86CD1B124C4A001529E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +51,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F094C611B14327B0091FD1E /* CoreVideo.framework in Frameworks */,
+				3F094C5F1B1432740091FD1E /* CoreMedia.framework in Frameworks */,
+				3F094C5D1B1432580091FD1E /* ImageIO.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +70,9 @@
 		3FBD86BF1B124C4A001529E5 = {
 			isa = PBXGroup;
 			children = (
+				3F094C601B14327B0091FD1E /* CoreVideo.framework */,
+				3F094C5E1B1432740091FD1E /* CoreMedia.framework */,
+				3F094C5C1B1432580091FD1E /* ImageIO.framework */,
 				3FBD86CA1B124C4A001529E5 /* DeepFocus */,
 				3FBD86E01B124C4B001529E5 /* DeepFocusTests */,
 				3FBD86C91B124C4A001529E5 /* Products */,
@@ -411,6 +423,7 @@
 				3FBD86E91B124C4B001529E5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3FBD86EA1B124C4B001529E5 /* Build configuration list for PBXNativeTarget "DeepFocusTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +432,7 @@
 				3FBD86EC1B124C4B001529E5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

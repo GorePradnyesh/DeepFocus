@@ -8,21 +8,25 @@
 
 import UIKit
 import MobileCoreServices
-
+import ImageIO
 import AVFoundation
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavigationControllerDelegate {
     // MARK: private members
     var imageView = UIImageView()
     var cameraPicker = UIImagePickerController();
-    var customImagePicker = UIImagePickerController();
     var captureSession = AVCaptureSession();
     
     // Optional to store the capture device if present
     var captureDevice : AVCaptureDevice?;
     var previewLayer: AVCaptureVideoPreviewLayer?;
     
-
+    // variables to store captured media
+    var stillImageOutput:AVCaptureStillImageOutput?;
+    var stillImage:UIImage?;
+    
+    
+    
     // MARK: View overrides
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -94,16 +98,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
         }
         if(self.captureDevice == nil){
             NSLog("Could not find camera for device")
+            return;
         }
     }
     
     func beginSession(){
         self.configureDevice()
         var error:NSError? = nil;
+        // set the quality of the capture
+        self.captureSession.sessionPreset = AVCaptureSessionPresetHigh;
+        
+        // set the input of the session
         self.captureSession.addInput(AVCaptureDeviceInput(device:self.captureDevice, error:&error))
         if error != nil {
             println("error: \(error?.localizedDescription)")
         }
+        
+        // set the output of the session
+        self.stillImageOutput = AVCaptureStillImageOutput()
+        let settings = NSDictionary(objectsAndKeys: AVVideoCodecJPEG,AVVideoCodecKey);
+        self.stillImageOutput?.outputSettings = settings;
+        self.captureSession.addOutput(self.stillImageOutput);
         
         self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession);
         self.view.layer.addSublayer(self.previewLayer);
@@ -174,7 +189,33 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate , UINavi
 
     
     func shootPicture(){
-        self.customImagePicker.takePicture();
+        if(self.stillImageOutput == nil){
+            NSLog("Still Image output is not initialized");
+        }
+        // Use direct swift provided API to get the video connection
+        if let videoConnection = self.stillImageOutput?.connectionWithMediaType(AVMediaTypeVideo){
+            self.stillImageOutput?.captureStillImageAsynchronouslyFromConnection(videoConnection,
+                completionHandler: { (imageSampleBuffer:CMSampleBuffer!, error:NSError!) -> Void in
+                    if(error != nil){
+                        println("error: \(error?.localizedDescription)")
+                        return;
+                    }
+                    // TODO: What are exifAttachements ???
+                    let exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, nil);
+                    if (exifAttachments != nil) {
+                        println("attachements: \(exifAttachments)");
+                    } else {
+                        println("no attachments");
+                    }
+                    
+                    let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageSampleBuffer);
+                    self.imageView.image = UIImage(data: imageData);
+                    self.adjustHeight()
+                    
+            });
+        }else{
+            NSLog("Could not create video Connection for AVMediaTypeVideo");
+        }
     }
     
     
