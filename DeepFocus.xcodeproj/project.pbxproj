@@ -12,7 +12,6 @@
 		3F094C611B14327B0091FD1E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F094C601B14327B0091FD1E /* CoreVideo.framework */; };
 		3FBD86CE1B124C4A001529E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86CD1B124C4A001529E5 /* AppDelegate.swift */; };
 		3FBD86D01B124C4A001529E5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86CF1B124C4A001529E5 /* ViewController.swift */; };
-		3FBD86D31B124C4A001529E5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FBD86D11B124C4A001529E5 /* Main.storyboard */; };
 		3FBD86D51B124C4A001529E5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FBD86D41B124C4A001529E5 /* Images.xcassets */; };
 		3FBD86D81B124C4A001529E5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FBD86D61B124C4A001529E5 /* LaunchScreen.xib */; };
 		3FBD86E41B124C4B001529E5 /* DeepFocusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86E31B124C4B001529E5 /* DeepFocusTests.swift */; };
@@ -38,7 +37,6 @@
 		3FBD86CC1B124C4A001529E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FBD86CD1B124C4A001529E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3FBD86CF1B124C4A001529E5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		3FBD86D21B124C4A001529E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3FBD86D41B124C4A001529E5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3FBD86D71B124C4A001529E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		3FBD86DD1B124C4B001529E5 /* DeepFocusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeepFocusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,7 +93,6 @@
 			children = (
 				3FBD86CD1B124C4A001529E5 /* AppDelegate.swift */,
 				3FBD86CF1B124C4A001529E5 /* ViewController.swift */,
-				3FBD86D11B124C4A001529E5 /* Main.storyboard */,
 				3FDD0BBF1B16DC1300FD89FB /* EntryStoryBoard.storyboard */,
 				3FBD86D41B124C4A001529E5 /* Images.xcassets */,
 				3FBD86D61B124C4A001529E5 /* LaunchScreen.xib */,
@@ -211,7 +208,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FDD0BC01B16DC1300FD89FB /* EntryStoryBoard.storyboard in Resources */,
-				3FBD86D31B124C4A001529E5 /* Main.storyboard in Resources */,
 				3FBD86D81B124C4A001529E5 /* LaunchScreen.xib in Resources */,
 				3FBD86D51B124C4A001529E5 /* Images.xcassets in Resources */,
 			);
@@ -256,14 +252,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		3FBD86D11B124C4A001529E5 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3FBD86D21B124C4A001529E5 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		3FBD86D61B124C4A001529E5 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

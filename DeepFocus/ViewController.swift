@@ -13,9 +13,35 @@ import AVFoundation
 
 class ViewController: UIViewController{
 
+    // MARK:
+    
+    
     // MARK: View overrides
     override func viewDidLoad() {
         super.viewDidLoad();
+        
+        // Add Capture Button
+        let captureButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        captureButton.setTitle("Capture", forState: .Normal)
+        captureButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.view.addSubview(captureButton);
+        let topEdgeConstraint = NSLayoutConstraint(item: captureButton,
+            attribute: .CenterY,
+            relatedBy: .Equal,
+            toItem: self.view,
+            attribute: .CenterY,
+            multiplier: 1.0,
+            constant: 0.0);
+        let centerXConstraint = NSLayoutConstraint(item: captureButton,
+            attribute: .CenterX,
+            relatedBy: .Equal,
+            toItem: self.view,
+            attribute: .CenterX,
+            multiplier: 1.0,
+            constant: 0.0);
+        self.view.addConstraint(topEdgeConstraint);
+        self.view.addConstraint(centerXConstraint);
+
     }
     
     // MARK: Outlets and Actions
@@ -24,5 +50,11 @@ class ViewController: UIViewController{
     @IBAction func takePhoto(sender: AnyObject) {
         //self.initOverlayControlsForCamera();
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
 }
 
