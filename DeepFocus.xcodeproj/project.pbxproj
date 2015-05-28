@@ -17,6 +17,7 @@
 		3FBD86E41B124C4B001529E5 /* DeepFocusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86E31B124C4B001529E5 /* DeepFocusTests.swift */; };
 		3FBD86FC1B12B691001529E5 /* CaptureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86FB1B12B691001529E5 /* CaptureController.swift */; };
 		3FDD0BC01B16DC1300FD89FB /* EntryStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FDD0BBF1B16DC1300FD89FB /* EntryStoryBoard.storyboard */; };
+		3FDD0BC21B16EBA500FD89FB /* DFPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDD0BC11B16EBA500FD89FB /* DFPresentation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		3FBD86E31B124C4B001529E5 /* DeepFocusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepFocusTests.swift; sourceTree = "<group>"; };
 		3FBD86FB1B12B691001529E5 /* CaptureController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureController.swift; sourceTree = "<group>"; };
 		3FDD0BBF1B16DC1300FD89FB /* EntryStoryBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EntryStoryBoard.storyboard; sourceTree = "<group>"; };
+		3FDD0BC11B16EBA500FD89FB /* DFPresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFPresentation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				3FBD86D61B124C4A001529E5 /* LaunchScreen.xib */,
 				3FBD86CB1B124C4A001529E5 /* Supporting Files */,
 				3FBD86FB1B12B691001529E5 /* CaptureController.swift */,
+				3FDD0BC11B16EBA500FD89FB /* DFPresentation.swift */,
 			);
 			path = DeepFocus;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FBD86FC1B12B691001529E5 /* CaptureController.swift in Sources */,
+				3FDD0BC21B16EBA500FD89FB /* DFPresentation.swift in Sources */,
 				3FBD86D01B124C4A001529E5 /* ViewController.swift in Sources */,
 				3FBD86CE1B124C4A001529E5 /* AppDelegate.swift in Sources */,
 			);

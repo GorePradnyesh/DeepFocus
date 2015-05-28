@@ -207,7 +207,14 @@ class CaptureController: UIViewController {
                     
                     let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageSampleBuffer);
                     self.imageView.image = UIImage(data: imageData);
-                    self.adjustHeight()
+                    self.adjustHeight();
+                    
+                    self.viewPresentationController();
+                    /*
+                    let dFPresenter = DFPresenter();
+                    self.presentViewController(dFPresenter, animated: true, completion: { () -> Void in
+                        self.captureSession.stopRunning();
+                    })*/
                     
             });
         }else{
@@ -231,6 +238,16 @@ class CaptureController: UIViewController {
     
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
         touchesBegan(touches, withEvent: event);
+    }
+    
+    // MARK: segue
+    func viewPresentationController(){
+        //TODO: use global const strings
+        // let storyBoard = UIStoryboard(name: "EntryStoryBoard", bundle: nil);
+        // let viewController = storyBoard.instantiateViewControllerWithIdentifier("DFPresentation") as UIViewController;
+        // self.presentViewController(viewController, animated: true, completion: nil);
+        // let presentationViewController = DFPresenter(nibName: "DFPresenter", bundle:nil);
+        // self.showViewController(presentationViewController, sender: nil);
     }
 }
 
