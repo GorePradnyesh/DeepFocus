@@ -17,6 +17,7 @@
 		3FBD86D81B124C4A001529E5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FBD86D61B124C4A001529E5 /* LaunchScreen.xib */; };
 		3FBD86E41B124C4B001529E5 /* DeepFocusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86E31B124C4B001529E5 /* DeepFocusTests.swift */; };
 		3FBD86FC1B12B691001529E5 /* CaptureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86FB1B12B691001529E5 /* CaptureController.swift */; };
+		3FDD0BC01B16DC1300FD89FB /* EntryStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FDD0BBF1B16DC1300FD89FB /* EntryStoryBoard.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		3FBD86E21B124C4B001529E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FBD86E31B124C4B001529E5 /* DeepFocusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepFocusTests.swift; sourceTree = "<group>"; };
 		3FBD86FB1B12B691001529E5 /* CaptureController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureController.swift; sourceTree = "<group>"; };
+		3FDD0BBF1B16DC1300FD89FB /* EntryStoryBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EntryStoryBoard.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				3FBD86CD1B124C4A001529E5 /* AppDelegate.swift */,
 				3FBD86CF1B124C4A001529E5 /* ViewController.swift */,
 				3FBD86D11B124C4A001529E5 /* Main.storyboard */,
+				3FDD0BBF1B16DC1300FD89FB /* EntryStoryBoard.storyboard */,
 				3FBD86D41B124C4A001529E5 /* Images.xcassets */,
 				3FBD86D61B124C4A001529E5 /* LaunchScreen.xib */,
 				3FBD86CB1B124C4A001529E5 /* Supporting Files */,
@@ -207,6 +210,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FDD0BC01B16DC1300FD89FB /* EntryStoryBoard.storyboard in Resources */,
 				3FBD86D31B124C4A001529E5 /* Main.storyboard in Resources */,
 				3FBD86D81B124C4A001529E5 /* LaunchScreen.xib in Resources */,
 				3FBD86D51B124C4A001529E5 /* Images.xcassets in Resources */,
