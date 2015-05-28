@@ -12,15 +12,12 @@ import ImageIO
 import AVFoundation
 
 class ViewController: UIViewController{
-
-    // MARK:
     
+    let captureController = CaptureController()
     
-    // MARK: View overrides
     override func viewDidLoad() {
         super.viewDidLoad();
-        
-        // Add Capture Button
+        // MARK: Prepare Capture Button
         let captureButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         captureButton.setTitle("Capture", forState: .Normal)
         captureButton.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -41,16 +38,15 @@ class ViewController: UIViewController{
             constant: 0.0);
         self.view.addConstraint(topEdgeConstraint);
         self.view.addConstraint(centerXConstraint);
+        // Add Action to capture button
+        captureButton.addTarget(self, action: "takePhoto:", forControlEvents: UIControlEvents.TouchUpInside)
 
     }
     
-    // MARK: Outlets and Actions
-    @IBOutlet weak var capture: UIButton!
-    
-    @IBAction func takePhoto(sender: AnyObject) {
-        //self.initOverlayControlsForCamera();
+    func takePhoto(sender:UIButton!){
+        presentViewController(self.captureController, animated: true, completion: nil);
     }
-    
+        
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

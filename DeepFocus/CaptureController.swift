@@ -1,4 +1,4 @@
-//
+    //
 //  CaptureController.swift
 //  DeepFocus
 //
@@ -26,13 +26,12 @@ class CaptureController: UIViewController {
     var stillImageOutput:AVCaptureStillImageOutput?;
     var stillImage:UIImage?;
     
-    
-    
     // MARK: View overrides
     override func viewDidLoad() {
         super.viewDidLoad();
         self.updateUI();
         self.initCaptureDevice();
+        self.beginSession();
     }
     
     override func viewDidLayoutSubviews() {
@@ -40,10 +39,7 @@ class CaptureController: UIViewController {
             self.adjustHeight()
         }
     }
-    
-    
-    // MARK: Outlets and Actions
-    @IBOutlet weak var capture: UIButton!
+
     
     @IBOutlet weak var imageViewContainer: UIView!{
         didSet{
