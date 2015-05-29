@@ -99,9 +99,23 @@ class DFPresenter: UIViewController {
     
     func adjustHeight(){
         if(self.imageView.image?.aspectRatio > 0){
-            if let width = self.imageView.superview?.frame.size.width {
-                let height = width / self.imageView.image!.aspectRatio
-                self.imageView.frame = CGRect(x:0, y:0, width:width, height:height);
+            if var width = self.imageView.superview?.frame.size.width {
+                if var height = self.imageView.superview?.frame.size.height{
+                    let aspectRatio = self.imageView.image!.aspectRatio;
+                    if(height < width){
+                        if(width / aspectRatio > height){
+                            width = height * aspectRatio;
+                        }
+                        height = width / aspectRatio;
+                        
+                    }else{
+                        if(height * aspectRatio > width){
+                            height = width / aspectRatio;
+                        }
+                        width = height * aspectRatio;
+                    }
+                    self.imageView.frame = CGRect(x:0, y:0, width:width, height:height);
+                }
             }
         }else{
             self.imageView.frame = CGRectZero;
