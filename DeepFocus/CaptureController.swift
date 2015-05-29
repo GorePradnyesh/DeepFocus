@@ -14,7 +14,6 @@ import AVFoundation
 
 class CaptureController: UIViewController {
     // MARK: private members
-    var imageView = UIImageView()
     var cameraPicker = UIImagePickerController();
     var captureSession = AVCaptureSession();
     
@@ -35,18 +34,9 @@ class CaptureController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        if(self.imageView.image != nil){
-            self.adjustHeight()
-        }
+        super.viewDidLayoutSubviews()
     }
 
-    
-    @IBOutlet weak var imageViewContainer: UIView!{
-        didSet{
-            imageViewContainer.addSubview(imageView);
-        }
-    }
-    
     @IBAction func takePhoto(sender: AnyObject) {
         //self.initOverlayControlsForCamera();
         self.beginSession();
@@ -54,6 +44,7 @@ class CaptureController: UIViewController {
     
     
     // MARK: private helper functions
+    // TODO: remove this function
     func updateUI(){
         var urlString:NSString = "http://globe-views.com/dcim/dreams/car/car-03.jpg";
         var URL = NSURL(string:urlString);
@@ -62,25 +53,13 @@ class CaptureController: UIViewController {
             if let imageData = NSData(contentsOfURL: URL!){
                 if let image = UIImage(data: imageData){
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.imageView.image = image;
-                        self.adjustHeight()
+                        // self.imageView.image = image;
+                        // self.adjustHeight()
                     });
                 }
             }
         });
     }
-    
-    func adjustHeight(){
-        if(self.imageView.image?.aspectRatio > 0){
-            if let width = self.imageView.superview?.frame.size.width {
-                let height = width / self.imageView.image!.aspectRatio
-                self.imageView.frame = CGRect(x:0, y:0, width:width, height:height);
-            }
-        }else{
-            self.imageView.frame = CGRectZero;
-        }
-    } // end of adjust width
-    
     
     // MARK: Camera controller methods
     
@@ -124,19 +103,6 @@ class CaptureController: UIViewController {
         
         self.captureSession.startRunning();
     }
-    
-    
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        var image = info[UIImagePickerControllerEditedImage] as? UIImage;
-        
-        if(image == nil){
-            image = info[UIImagePickerControllerOriginalImage] as? UIImage;
-        }
-        self.imageView.image = image;
-        adjustHeight();
-        dismissViewControllerAnimated(true, completion: nil);
-    }
-    
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil);
@@ -209,10 +175,7 @@ class CaptureController: UIViewController {
                     }
                     
                     let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageSampleBuffer);
-                    self.imageView.image = UIImage(data: imageData);
-                    self.adjustHeight();
-                    
-                    self.viewPresentationController();
+                    self.showPresentationController(imageData);
                     
             });
         }else{
@@ -242,18 +205,13 @@ class CaptureController: UIViewController {
     }
     
     // MARK: segue
-    func viewPresentationController(){
+    func showPresentationController(imageData:NSData){
         let dfPresenter = DFPresenter();
+        dfPresenter.imageView.image = UIImage(data: imageData);
         self.presentViewController(dfPresenter, animated: true) { () -> Void in
             self.captureSession.stopRunning();
             println("Stopped the capture session");
         }
-    }
-}
-
-extension UIImage{
-    var aspectRatio: CGFloat{
-        return ((size.height != 0) ? (size.width / size.height) : 0);
     }
 }
 

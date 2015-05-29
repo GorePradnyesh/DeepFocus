@@ -15,9 +15,10 @@ class DFPresenter: UIViewController {
     var autoLayoutDictionary:Dictionary<String, UIView> = Dictionary()
     
     // MARK: UIViewController overrides
-    
     override func loadView() {
         self.configureLayout();
+        self.initDisplay();
+        self.adjustHeight();
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -31,8 +32,10 @@ class DFPresenter: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+        super.viewDidLayoutSubviews();
+        self.adjustHeight();
     }
+    
     
     // MARK: configure the layout
     func configureLayout(){
@@ -49,7 +52,7 @@ class DFPresenter: UIViewController {
         //self.imageViewContainer = UIView(frame: CGRect(x:parentBounds.origin.x, y:(parentBounds.origin.y + 10), width:parentBounds.width - 10, height:(parentBounds.height - 10)));
         self.imageViewContainer = UIView();
         self.imageViewContainer?.setTranslatesAutoresizingMaskIntoConstraints(false);
-        self.imageViewContainer?.backgroundColor = UIColor.redColor();
+        // self.imageViewContainer?.backgroundColor = UIColor.redColor();
 
         // Add to the dictionary
         self.autoLayoutDictionary[imageViewContainerName] = self.imageViewContainer;
@@ -68,7 +71,7 @@ class DFPresenter: UIViewController {
         let imageContainerVContraint:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[\(imageViewContainerName)]-20-|", options: NSLayoutFormatOptions(0), metrics: nil, views: self.autoLayoutDictionary)
         self.view.addConstraints(imageContainerHContraint);
         self.view.addConstraints(imageContainerVContraint);
-
+        
         /*
         let topEdgeConstraint = NSLayoutConstraint(item: self.imageViewContainer!,
                                                     attribute: .CenterY,
@@ -87,7 +90,29 @@ class DFPresenter: UIViewController {
         self.view.addConstraint(topEdgeConstraint);
         self.view.addConstraint(centerXConstraint);
         */
-        
+    }
+    
+    //MARK: display image
+    func initDisplay(){
+        self.imageViewContainer?.addSubview(self.imageView);
+    }
+    
+    func adjustHeight(){
+        if(self.imageView.image?.aspectRatio > 0){
+            if let width = self.imageView.superview?.frame.size.width {
+                let height = width / self.imageView.image!.aspectRatio
+                self.imageView.frame = CGRect(x:0, y:0, width:width, height:height);
+            }
+        }else{
+            self.imageView.frame = CGRectZero;
+        }
+    } // end of adjust width
+}
+
+
+extension UIImage{
+    var aspectRatio: CGFloat{
+        return ((size.height != 0) ? (size.width / size.height) : 0);
     }
 }
 
