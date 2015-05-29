@@ -28,7 +28,6 @@ class CaptureController: UIViewController {
     // MARK: View overrides
     override func viewDidLoad() {
         super.viewDidLoad();
-        self.updateUI();
         self.initCaptureDevice();
         self.beginSession();
     }
@@ -42,24 +41,6 @@ class CaptureController: UIViewController {
         self.beginSession();
     }
     
-    
-    // MARK: private helper functions
-    // TODO: remove this function
-    func updateUI(){
-        var urlString:NSString = "http://globe-views.com/dcim/dreams/car/car-03.jpg";
-        var URL = NSURL(string:urlString);
-        let qos = Int(QOS_CLASS_USER_INITIATED.value);
-        dispatch_async(dispatch_get_global_queue(qos, 0), { () -> Void in
-            if let imageData = NSData(contentsOfURL: URL!){
-                if let image = UIImage(data: imageData){
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        // self.imageView.image = image;
-                        // self.adjustHeight()
-                    });
-                }
-            }
-        });
-    }
     
     // MARK: Camera controller methods
     
