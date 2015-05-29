@@ -175,6 +175,9 @@ class CaptureController: UIViewController {
     }
     
     func focusTo(value: Float){
+        if(value > 1.0){
+            println("Got focus value \(value) > 1")
+        }
         if let device = self.captureDevice {
             if(device.lockForConfiguration(nil)){
                 device.setFocusModeLockedWithLensPosition(value, completionHandler: { (time) -> Void in
@@ -210,11 +213,6 @@ class CaptureController: UIViewController {
                     self.adjustHeight();
                     
                     self.viewPresentationController();
-                    /*
-                    let dFPresenter = DFPresenter();
-                    self.presentViewController(dFPresenter, animated: true, completion: { () -> Void in
-                        self.captureSession.stopRunning();
-                    })*/
                     
             });
         }else{
@@ -230,10 +228,13 @@ class CaptureController: UIViewController {
     
     // Touches which control the focus ( _temporary functions_ )
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        let screenWidth = UIScreen.mainScreen().bounds.size.width;
-        let anyTouch = touches.anyObject() as UITouch;
-        let touchPercentage = anyTouch.locationInView(self.view).x / screenWidth;
-        self.focusTo(Float(touchPercentage));
+        if(self.isViewLoaded() && self.view.window != nil){
+            // dont process touches if view is not the current view
+            let screenWidth = UIScreen.mainScreen().bounds.size.width;
+            let anyTouch = touches.anyObject() as UITouch;
+            let touchPercentage = anyTouch.locationInView(self.view).x / screenWidth;
+            self.focusTo(Float(touchPercentage));
+        }
     }
     
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
@@ -242,12 +243,11 @@ class CaptureController: UIViewController {
     
     // MARK: segue
     func viewPresentationController(){
-        //TODO: use global const strings
-        // let storyBoard = UIStoryboard(name: "EntryStoryBoard", bundle: nil);
-        // let viewController = storyBoard.instantiateViewControllerWithIdentifier("DFPresentation") as UIViewController;
-        // self.presentViewController(viewController, animated: true, completion: nil);
-        // let presentationViewController = DFPresenter(nibName: "DFPresenter", bundle:nil);
-        // self.showViewController(presentationViewController, sender: nil);
+        let dfPresenter = DFPresenter();
+        self.presentViewController(dfPresenter, animated: true) { () -> Void in
+            self.captureSession.stopRunning();
+            println("Stopped the capture session");
+        }
     }
 }
 
