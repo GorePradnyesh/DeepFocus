@@ -16,6 +16,7 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
     var imageCollection = Array<UIImage>();
     let reuseIdentifier = "DFCollection";
     var collectionView:UICollectionView?;
+    var autoLayoutDictionary:Dictionary<String, UIView> = Dictionary()
     
     override func loadView() {
         super.loadView();
@@ -24,17 +25,33 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
         let baseView:UIView = UIView(frame: UIScreen.mainScreen().bounds);
         baseView.backgroundColor = UIColor(white: 1.0, alpha: 1.0);
         self.view = baseView;
+        
         // flow layout initialization
         let flowLayout = UICollectionViewFlowLayout();
         // collection view initialization
-        let collectionViewFrame:CGRect = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height);
+        let collectionViewName = "collectionView";
         self.collectionView = UICollectionView(frame:self.view.frame, collectionViewLayout: flowLayout);
+        self.collectionView?.setTranslatesAutoresizingMaskIntoConstraints(false);
+        self.autoLayoutDictionary[collectionViewName] = self.collectionView!;
+        // TODO: Move the data source to a location outside the class
         self.collectionView!.dataSource = self;
         self.collectionView!.delegate = self;
         self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier);
         self.collectionView!.backgroundColor = UIColor.whiteColor();
+        // Add the collectionView as a subview of the view
         self.view.addSubview(self.collectionView!);
 
+        // Add auto layout constraints to collection view.
+        let baseWidth = 100;
+        let baseHeight = 100;
+        let view1_constraint_H:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:[\(collectionViewName)(>=\(baseWidth))]", options: NSLayoutFormatOptions(0), metrics: nil, views: self.autoLayoutDictionary);
+        let view1_constraint_V:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:[\(collectionViewName)(>=\(baseHeight))]", options: NSLayoutFormatOptions(0), metrics: nil, views: self.autoLayoutDictionary);
+        self.view.addConstraints(view1_constraint_H)
+        self.view.addConstraints(view1_constraint_V)
+        let collectionViewContainerHContraint:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[\(collectionViewName)]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: self.autoLayoutDictionary)
+        let collectionViewContainerVContraint:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[\(collectionViewName)]-20-|", options: NSLayoutFormatOptions(0), metrics: nil, views: self.autoLayoutDictionary)
+        self.view.addConstraints(collectionViewContainerHContraint);
+        self.view.addConstraints(collectionViewContainerVContraint);
         
     }
     
@@ -42,7 +59,7 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
         super.viewDidLoad();
     }
     
-    //MARK: Flow Layout protocol implementation
+    // MARK: Flow Layout protocol implementation
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSize(width: 30, height: 30);
     }
@@ -52,7 +69,7 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     
-    // MARK: override dataSource methods
+    // MARK: DataSource methods
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1;
     }

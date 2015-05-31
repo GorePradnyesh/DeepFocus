@@ -60,7 +60,6 @@ class DFPresenter: UIViewController {
         self.view.addSubview(self.imageViewContainer!);
         
         // Configure autoLayout
-        //TODO: find a way to use string constants
         let baseWidth = 100;
         let baseHeight = 100;
         let view1_constraint_H:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:[\(imageViewContainerName)(>=\(baseWidth))]", options: NSLayoutFormatOptions(0), metrics: nil, views: self.autoLayoutDictionary);
