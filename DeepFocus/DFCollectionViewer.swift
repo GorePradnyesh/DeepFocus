@@ -99,6 +99,19 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
         cell.contentView.addSubview(imageView)
         return cell;
     }
+
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if(self.collectionView != collectionView){
+            println("Unknown collection view was selected");
+            return;
+        }
+        var imageToDisplay:UIImage = self.imageCollection[indexPath.row]
+        let dfPresenter = DFPresenter();
+        dfPresenter.imageView.image = imageToDisplay;
+        self.presentViewController(dfPresenter, animated: true) { () -> Void in
+        }
+    }
     
     
     // MARK: private helper methods 
