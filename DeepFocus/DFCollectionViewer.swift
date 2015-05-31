@@ -10,13 +10,17 @@ import Foundation
 import UIKit
 
 class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
-    
-    //TODO: move away from using constants here
-    let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0);
+    // TODO: move away from using constants here
+    var sectionInsets:UIEdgeInsets?
+
+    // The collection that holds the thumbnails to display
     var imageCollection = Array<UIImage>();
     let reuseIdentifier = "DFCollection";
     var collectionView:UICollectionView?;
     var autoLayoutDictionary:Dictionary<String, UIView> = Dictionary()
+
+    var defaultMaxThumbHeight = 100;
+    var defaultMaxThumbWidth = 100;
     
     override func loadView() {
         super.loadView();
@@ -52,7 +56,6 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
         let collectionViewContainerVContraint:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[\(collectionViewName)]-20-|", options: NSLayoutFormatOptions(0), metrics: nil, views: self.autoLayoutDictionary)
         self.view.addConstraints(collectionViewContainerHContraint);
         self.view.addConstraints(collectionViewContainerVContraint);
-        
     }
     
     override func viewDidLoad() {
@@ -61,11 +64,18 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     // MARK: Flow Layout protocol implementation
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: 30, height: 30);
+        var thumbnail = self.imageCollection[indexPath.row];
+        return self.getThumbnailBounds(thumbnail);
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return self.sectionInsets;
+        if(self.sectionInsets == nil){
+            // Use relative values
+            let vInset:CGFloat = 20.0;
+            let hInset:CGFloat = 10.0;
+            self.sectionInsets = UIEdgeInsets(top: vInset, left: hInset, bottom: vInset, right: hInset);
+        }
+        return self.sectionInsets!;
     }
     
     
@@ -76,15 +86,34 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20;
-        //return self.imageCollection.count;
+        return self.imageCollection.count;
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        // TODO: Consider subclassing UICollectioViewCell. Might make for better cleanup of images etc.
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as UICollectionViewCell
         cell.backgroundColor = UIColor.orangeColor()
+        let imageView = UIImageView(frame: cell.contentView.frame)  ;
+        imageView.contentMode = .ScaleAspectFill;
+        imageView.image = self.imageCollection[indexPath.row];
+        cell.contentView.addSubview(imageView)
         return cell;
     }
     
+    
+    // MARK: private helper methods 
+    private func getThumbnailBounds(let image:UIImage) -> CGSize {
+        var localWidth = 5;     // non zero values for error detection
+        var localHeight = 5;    // non zero values for error detection
+        var aspectRatio = image.aspectRatio;
+        if(aspectRatio > 1){  // width > height
+            localWidth = self.defaultMaxThumbWidth;
+            localHeight = Int(CGFloat(localWidth) / aspectRatio);
+        }else{
+            localHeight = self.defaultMaxThumbHeight;
+            localWidth = Int(CGFloat(localHeight) * aspectRatio);
+        }
+        return CGSize(width:localWidth, height:localHeight);
+    }
     
 }
