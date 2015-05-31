@@ -187,12 +187,22 @@ class CaptureController: UIViewController {
     
     // MARK: segue
     func showPresentationController(imageData:NSData){
+        let collectionViewer = DFCollectionViewer();
+        let dImage = UIImage(data: imageData);
+        collectionViewer.imageCollection.append(dImage!);
+        self.presentViewController(collectionViewer, animated: true) { () -> Void in
+            self.captureSession.stopRunning();
+            println("Stopped the capture session");
+        }
+        
+        
+        /*
         let dfPresenter = DFPresenter();
         dfPresenter.imageView.image = UIImage(data: imageData);
         self.presentViewController(dfPresenter, animated: true) { () -> Void in
             self.captureSession.stopRunning();
             println("Stopped the capture session");
-        }
+        }*/
     }
 }
 

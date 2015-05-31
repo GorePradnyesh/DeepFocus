@@ -10,6 +10,8 @@
 		3F094C5D1B1432580091FD1E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F094C5C1B1432580091FD1E /* ImageIO.framework */; };
 		3F094C5F1B1432740091FD1E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F094C5E1B1432740091FD1E /* CoreMedia.framework */; };
 		3F094C611B14327B0091FD1E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F094C601B14327B0091FD1E /* CoreVideo.framework */; };
+		3F7CB7DD1B18DB7E00230F2A /* DFCollectionViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7CB7DC1B18DB7E00230F2A /* DFCollectionViewer.swift */; };
+		3F7CB7DF1B18DE1B00230F2A /* DFCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7CB7DE1B18DE1B00230F2A /* DFCollectionViewDataSource.swift */; };
 		3FBD86CE1B124C4A001529E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86CD1B124C4A001529E5 /* AppDelegate.swift */; };
 		3FBD86D01B124C4A001529E5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86CF1B124C4A001529E5 /* ViewController.swift */; };
 		3FBD86D51B124C4A001529E5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FBD86D41B124C4A001529E5 /* Images.xcassets */; };
@@ -34,6 +36,8 @@
 		3F094C5C1B1432580091FD1E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3F094C5E1B1432740091FD1E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		3F094C601B14327B0091FD1E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		3F7CB7DC1B18DB7E00230F2A /* DFCollectionViewer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFCollectionViewer.swift; sourceTree = "<group>"; };
+		3F7CB7DE1B18DE1B00230F2A /* DFCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		3FBD86C81B124C4A001529E5 /* DeepFocus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeepFocus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FBD86CC1B124C4A001529E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FBD86CD1B124C4A001529E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -101,6 +105,8 @@
 				3FBD86CB1B124C4A001529E5 /* Supporting Files */,
 				3FBD86FB1B12B691001529E5 /* CaptureController.swift */,
 				3FDD0BC11B16EBA500FD89FB /* DFPresentation.swift */,
+				3F7CB7DC1B18DB7E00230F2A /* DFCollectionViewer.swift */,
+				3F7CB7DE1B18DE1B00230F2A /* DFCollectionViewDataSource.swift */,
 			);
 			path = DeepFocus;
 			sourceTree = "<group>";
@@ -232,8 +238,10 @@
 			files = (
 				3FBD86FC1B12B691001529E5 /* CaptureController.swift in Sources */,
 				3FDD0BC21B16EBA500FD89FB /* DFPresentation.swift in Sources */,
+				3F7CB7DF1B18DE1B00230F2A /* DFCollectionViewDataSource.swift in Sources */,
 				3FBD86D01B124C4A001529E5 /* ViewController.swift in Sources */,
 				3FBD86CE1B124C4A001529E5 /* AppDelegate.swift in Sources */,
+				3F7CB7DD1B18DB7E00230F2A /* DFCollectionViewer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
