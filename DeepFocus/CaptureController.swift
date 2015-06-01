@@ -12,7 +12,9 @@ import MobileCoreServices
 import ImageIO
 import AVFoundation
 
+
 class CaptureController: UIViewController {
+    
     // MARK: private members
     var cameraPicker = UIImagePickerController();
     var captureSession = AVCaptureSession();
@@ -24,6 +26,9 @@ class CaptureController: UIViewController {
     // variables to store captured media
     var stillImageOutput:AVCaptureStillImageOutput?;
     var stillImage:UIImage?;
+    var dfSequence:Dictionary<Float, UIImage> = Dictionary();
+    
+    let focusIncrement = 0.1;
     
     // MARK: View overrides
     override func viewDidLoad() {
@@ -136,6 +141,8 @@ class CaptureController: UIViewController {
     
     
     func shootPicture(){
+        self.captureDFSequence(0.1);
+        /*
         if(self.stillImageOutput == nil){
             NSLog("Still Image output is not initialized");
         }
@@ -161,11 +168,50 @@ class CaptureController: UIViewController {
             });
         }else{
             NSLog("Could not create video Connection for AVMediaTypeVideo");
+        }*/
+    }
+    
+    func captureDFSequence(focusValue:Float){
+        println("Capturing value for \(focusValue)")
+        if(stillImageOutput == nil){
+            println("stillImageOutput has not been initialized");
+        }
+        if(focusValue >= 1.0){
+            // DFCapture sequence has completed.
+            println("Done capturing DFSequence. Sequence length :\(self.dfSequence.count)");
+            self.showPresentationController(self.dfSequence)
+        }
+        else{
+            if let videoConnection = self.stillImageOutput?.connectionWithMediaType(AVMediaTypeVideo){
+                self.focusTo(focusValue);
+                self.stillImageOutput?.captureStillImageAsynchronouslyFromConnection(videoConnection,
+                    completionHandler: { (imageSampleBuffer:CMSampleBuffer!, error:NSError!) -> Void in
+                        if(error != nil){
+                            println("error: \(error?.localizedDescription)")
+                            return;
+                        }
+                        // TODO: What are exifAttachements ???
+                        let exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, nil);
+                        if (exifAttachments != nil) {
+                            println("attachements: \(exifAttachments)");
+                        } else {
+                            println("no attachments");
+                        }
+                        
+                        let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageSampleBuffer);
+                        self.dfSequence[focusValue] = UIImage(data: imageData);
+                        let newFocus = focusValue + Float(self.focusIncrement);
+                        self.captureDFSequence(newFocus);
+                });
+            }else{
+                NSLog("Could not create video Connection for AVMediaTypeVideo");
+            }
         }
     }
     
     
     func cancelPicture(){
+        // TODO: Segue to another controller and stop running in the completion handler
         self.captureSession.stopRunning()
     }
     
@@ -186,15 +232,14 @@ class CaptureController: UIViewController {
     }
     
     // MARK: segue
-    func showPresentationController(imageData:NSData){
+    func showPresentationController(dfSequence: Dictionary<Float, UIImage>){
         let collectionViewer = DFCollectionViewer();
-        let dImage = UIImage(data: imageData);
-        collectionViewer.imageCollection.append(dImage!);
+        collectionViewer.dfSequence = dfSequence;
         
         self.presentViewController(collectionViewer, animated: true) { () -> Void in
             self.captureSession.stopRunning();
             println("Stopped the capture session");
-        }        
+        }
     }
 }
 

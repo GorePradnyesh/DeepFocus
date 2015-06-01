@@ -14,13 +14,21 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
     var sectionInsets:UIEdgeInsets?
 
     // The collection that holds the thumbnails to display
-    var imageCollection = Array<UIImage>();
+    var sortedFocusList = Array<Float>();
+    var dfSequence:Dictionary<Float, UIImage>?{
+        willSet(newValue){
+            if(newValue == nil){
+                return;
+            }
+            self.sortedFocusList = Array(newValue!.keys).sorted(<)
+        }
+    };
     let reuseIdentifier = "DFCollection";
     var collectionView:UICollectionView?;
-    var autoLayoutDictionary:Dictionary<String, UIView> = Dictionary()
+    var autoLayoutDictionary:Dictionary<String, UIView> = Dictionary();
 
-    var defaultMaxThumbHeight = 100;
-    var defaultMaxThumbWidth = 100;
+    var defaultMaxThumbHeight = 300;
+    var defaultMaxThumbWidth = 300;
     
     override func loadView() {
         super.loadView();
@@ -64,7 +72,8 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     // MARK: Flow Layout protocol implementation
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        var thumbnail = self.imageCollection[indexPath.row];
+        var focusValue = self.sortedFocusList[indexPath.row];
+        var thumbnail = self.getImageForFocus(focusValue)
         return self.getThumbnailBounds(thumbnail);
     }
     
@@ -86,7 +95,7 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.imageCollection.count;
+        return self.sortedFocusList.count;
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -95,18 +104,19 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
         cell.backgroundColor = UIColor.orangeColor()
         let imageView = UIImageView(frame: cell.contentView.frame)  ;
         imageView.contentMode = .ScaleAspectFill;
-        imageView.image = self.imageCollection[indexPath.row];
+        imageView.image = self.getImageForFocus(self.sortedFocusList[indexPath.row]);
         cell.contentView.addSubview(imageView)
         return cell;
     }
 
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        //TODO: turn off touches when the view is not active.
         if(self.collectionView != collectionView){
             println("Unknown collection view was selected");
             return;
         }
-        var imageToDisplay:UIImage = self.imageCollection[indexPath.row]
+        var imageToDisplay:UIImage = self.getImageForFocus(self.sortedFocusList[indexPath.row]);
         let dfPresenter = DFPresenter();
         dfPresenter.imageView.image = imageToDisplay;
         self.presentViewController(dfPresenter, animated: true) { () -> Void in
@@ -127,6 +137,16 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
             localWidth = Int(CGFloat(localHeight) * aspectRatio);
         }
         return CGSize(width:localWidth, height:localHeight);
+    }
+    
+    private func getImageForFocus(focusValue:Float) -> UIImage{
+        var thumbnail = self.dfSequence?[focusValue];
+        if(thumbnail == nil){
+            println("Error could not find thumbnail for focus \(focusValue)");
+            var errorImage = UIImage(named: "errorImage")
+            return errorImage!;
+        }
+        return thumbnail!;
     }
     
 }
