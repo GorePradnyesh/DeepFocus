@@ -16,8 +16,7 @@ import AVFoundation
 class CaptureController: UIViewController {
     
     // MARK: private members
-    var cameraPicker = UIImagePickerController();
-    var captureSession = AVCaptureSession();
+    var captureSession:AVCaptureSession?;
     
     // Optional to store the capture device if present
     var captureDevice : AVCaptureDevice?;
@@ -33,15 +32,15 @@ class CaptureController: UIViewController {
     // MARK: UIViewController overrides
     override func viewDidLoad() {
         super.viewDidLoad();
-        self.initCaptureDevice();
-        self.beginSession();
+        //self.initCaptureDevice();
+        //self.beginSession();
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated);
         // Hide the navigation bar on the camera overlay. Use the toolBar buttons instead
         self.navigationController?.setNavigationBarHidden(true, animated: true);
-        //TODO: Need to stop the capture session and re-init data structures.
+        self.initCamera();
     }
     
     override func viewDidLayoutSubviews() {
@@ -50,6 +49,10 @@ class CaptureController: UIViewController {
     
     
     // MARK: Camera controller methods
+    func initCamera(){
+        self.initCaptureDevice();
+        self.beginSession();
+    }
     
     func initCaptureDevice(){
         let devices = AVCaptureDevice.devices();
@@ -68,12 +71,14 @@ class CaptureController: UIViewController {
     
     func beginSession(){
         self.configureDevice()
+        // initialize the capture session
+        self.captureSession = AVCaptureSession()
         var error:NSError? = nil;
         // set the quality of the capture
-        self.captureSession.sessionPreset = AVCaptureSessionPresetHigh;
+        self.captureSession!.sessionPreset = AVCaptureSessionPresetHigh;
         
         // set the input of the session
-        self.captureSession.addInput(AVCaptureDeviceInput(device:self.captureDevice, error:&error))
+        self.captureSession!.addInput(AVCaptureDeviceInput(device:self.captureDevice, error:&error))
         if error != nil {
             println("error: \(error?.localizedDescription)")
         }
@@ -82,14 +87,17 @@ class CaptureController: UIViewController {
         self.stillImageOutput = AVCaptureStillImageOutput()
         let settings = NSDictionary(objectsAndKeys: AVVideoCodecJPEG,AVVideoCodecKey);
         self.stillImageOutput?.outputSettings = settings;
-        self.captureSession.addOutput(self.stillImageOutput);
+        self.captureSession!.addOutput(self.stillImageOutput);
         
         self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession);
         self.view.layer.addSublayer(self.previewLayer);
         self.previewLayer?.frame = self.view.layer.frame;
         initOverlayControlsForCamera();
         
-        self.captureSession.startRunning();
+        self.captureSession!.startRunning();
+        
+        // re-initialize the data structures which hold captured artifacts
+        self.dfSequence = Dictionary();
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -101,7 +109,6 @@ class CaptureController: UIViewController {
         var toolBar =   UIToolbar(frame:CGRectMake(0, self.view.frame.height-54, self.view.frame.width, 55));
         toolBar.barStyle = UIBarStyle.BlackTranslucent;
         
-        let cancelPictureItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelPicture");
         let libraryPictureItem = UIBarButtonItem(barButtonSystemItem: .Bookmarks, target: self, action: "library")
         let shootPictureItem = UIBarButtonItem(barButtonSystemItem: .Camera, target: self, action: "shootPicture");
         let flexibleSpaceItem_1 = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil);
@@ -188,12 +195,6 @@ class CaptureController: UIViewController {
     }
     
     
-    func cancelPicture(){
-        // TODO: Segue to another controller and stop running in the completion handler
-        self.captureSession.stopRunning()
-    }
-    
-    
     // Touches which control the focus ( _temporary functions_ )
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         if(self.isViewLoaded() && self.view.window != nil){
@@ -214,9 +215,8 @@ class CaptureController: UIViewController {
         let collectionViewer = DFCollectionViewer();
         collectionViewer.dfSequence = dfSequence;
         self.navigationController?.pushViewController(collectionViewer, animated: true){
-            //TODO: Need to stop the capture session and re-init data structures.
-            //self.captureSession.stopRunning();
-            //println("Stopped the capture session");
+            self.captureSession!.stopRunning();
+            println("Stopped the capture session");
         }
     }
 }
