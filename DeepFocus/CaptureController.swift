@@ -1,4 +1,4 @@
-    //
+//
 //  CaptureController.swift
 //  DeepFocus
 //
@@ -30,20 +30,22 @@ class CaptureController: UIViewController {
     
     let focusIncrement = 0.1;
     
-    // MARK: View overrides
+    // MARK: UIViewController overrides
     override func viewDidLoad() {
         super.viewDidLoad();
         self.initCaptureDevice();
         self.beginSession();
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated);
+        // Hide the navigation bar on the camera overlay. Use the toolBar buttons instead
+        self.navigationController?.setNavigationBarHidden(true, animated: true);
+        //TODO: Need to stop the capture session and re-init data structures.
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-    }
-
-    @IBAction func takePhoto(sender: AnyObject) {
-        //self.initOverlayControlsForCamera();
-        self.beginSession();
     }
     
     
@@ -100,14 +102,16 @@ class CaptureController: UIViewController {
         toolBar.barStyle = UIBarStyle.BlackTranslucent;
         
         let cancelPictureItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelPicture");
+        let libraryPictureItem = UIBarButtonItem(barButtonSystemItem: .Bookmarks, target: self, action: "library")
         let shootPictureItem = UIBarButtonItem(barButtonSystemItem: .Camera, target: self, action: "shootPicture");
         let flexibleSpaceItem_1 = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil);
         let flexibleSpaceItem_2 = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil);
         let flexibleSpaceItem_3 = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil);
         
-        let items  = [cancelPictureItem, flexibleSpaceItem_1, shootPictureItem, flexibleSpaceItem_2, flexibleSpaceItem_3];
+        let items  = [/*flexibleSpaceItem_1, */flexibleSpaceItem_2, shootPictureItem, flexibleSpaceItem_3, libraryPictureItem];
         toolBar.setItems(items, animated: false);
         
+        // TODO: Add Auto layout functionlity for toolbar and overlay view.
         let overlayView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height - 44));
         overlayView.opaque = false;
         overlayView.backgroundColor = UIColor.clearColor();
@@ -141,34 +145,8 @@ class CaptureController: UIViewController {
     
     
     func shootPicture(){
+        // TODO: start from 0.0
         self.captureDFSequence(0.1);
-        /*
-        if(self.stillImageOutput == nil){
-            NSLog("Still Image output is not initialized");
-        }
-        // Use direct swift provided API to get the video connection
-        if let videoConnection = self.stillImageOutput?.connectionWithMediaType(AVMediaTypeVideo){
-            self.stillImageOutput?.captureStillImageAsynchronouslyFromConnection(videoConnection,
-                completionHandler: { (imageSampleBuffer:CMSampleBuffer!, error:NSError!) -> Void in
-                    if(error != nil){
-                        println("error: \(error?.localizedDescription)")
-                        return;
-                    }
-                    // TODO: What are exifAttachements ???
-                    let exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, nil);
-                    if (exifAttachments != nil) {
-                        println("attachements: \(exifAttachments)");
-                    } else {
-                        println("no attachments");
-                    }
-                    
-                    let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageSampleBuffer);
-                    self.showPresentationController(imageData);
-                    
-            });
-        }else{
-            NSLog("Could not create video Connection for AVMediaTypeVideo");
-        }*/
     }
     
     func captureDFSequence(focusValue:Float){
@@ -235,11 +213,30 @@ class CaptureController: UIViewController {
     func showPresentationController(dfSequence: Dictionary<Float, UIImage>){
         let collectionViewer = DFCollectionViewer();
         collectionViewer.dfSequence = dfSequence;
-        
-        self.presentViewController(collectionViewer, animated: true) { () -> Void in
-            self.captureSession.stopRunning();
-            println("Stopped the capture session");
+        self.navigationController?.pushViewController(collectionViewer, animated: true){
+            //TODO: Need to stop the capture session and re-init data structures.
+            //self.captureSession.stopRunning();
+            //println("Stopped the capture session");
         }
     }
 }
+    
+
+extension UINavigationController{
+    func pushViewController(viewController:UIViewController, animated:Bool, completion:Void -> Void){
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        pushViewController(viewController, animated: animated);
+        CATransaction.commit();
+    }
+}
+
+    
+    
+    
+    
+    
+    
+    
+    
 

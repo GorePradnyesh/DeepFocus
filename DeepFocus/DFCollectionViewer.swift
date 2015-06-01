@@ -27,8 +27,10 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
     var collectionView:UICollectionView?;
     var autoLayoutDictionary:Dictionary<String, UIView> = Dictionary();
 
-    var defaultMaxThumbHeight = 300;
-    var defaultMaxThumbWidth = 300;
+    var defaultMaxThumbHeight = 150;
+    var defaultMaxThumbWidth = 150;
+    
+    // MARK: UIViewController overrides 
     
     override func loadView() {
         super.loadView();
@@ -68,6 +70,11 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     override func viewDidLoad() {
         super.viewDidLoad();
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated);
+        self.navigationController?.setNavigationBarHidden(false, animated: true);
     }
     
     // MARK: Flow Layout protocol implementation
@@ -119,8 +126,7 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
         var imageToDisplay:UIImage = self.getImageForFocus(self.sortedFocusList[indexPath.row]);
         let dfPresenter = DFPresenter();
         dfPresenter.imageView.image = imageToDisplay;
-        self.presentViewController(dfPresenter, animated: true) { () -> Void in
-        }
+        self.navigationController?.pushViewController(dfPresenter, animated: true);
     }
     
     

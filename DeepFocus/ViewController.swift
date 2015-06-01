@@ -15,6 +15,11 @@ class ViewController: UIViewController{
     
     let captureController = CaptureController()
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: true);
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         // MARK: Prepare Capture Button
@@ -44,7 +49,8 @@ class ViewController: UIViewController{
     }
     
     func takePhoto(sender:UIButton!){
-        presentViewController(self.captureController, animated: true, completion: nil);
+        //presentViewController(self.captureController, animated: true, completion: nil);
+        self.navigationController?.pushViewController(self.captureController, animated: true);
     }
         
     override func didReceiveMemoryWarning() {

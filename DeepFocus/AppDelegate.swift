@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds);
         let storyBoard = UIStoryboard(name: "EntryStoryBoard", bundle: nil);
         let viewController = storyBoard.instantiateViewControllerWithIdentifier("ViewController") as UIViewController;
-        self.window?.rootViewController = viewController;
+        let DFNavigationController = UINavigationController(rootViewController: viewController);
+        self.window?.rootViewController = DFNavigationController;
         self.window?.makeKeyAndVisible();
         return true
     }
