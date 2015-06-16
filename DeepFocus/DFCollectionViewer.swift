@@ -173,8 +173,8 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
                 return;
             }
         }
-        for(focus, imageSampleBuffer) in self.dfSequence!{
-            self.exporter!.writeImageBuffer(imageSampleBuffer);
+        for focus in self.sortedFocusList {
+            self.exporter!.writeImageBuffer(self.dfSequence![focus]!);
         }
         self.exporter!.writeToCameraRoll();
     }

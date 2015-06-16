@@ -12,7 +12,7 @@ import UIKit
 import AssetsLibrary
 
 class DFExporter: NSObject {
-    let frameDuration:CMTime = CMTimeMakeWithSeconds(1.0/5.0, 90000);
+    let frameDuration:CMTime = CMTimeMakeWithSeconds(1.0/1.0, 90000);
     
     var nextPTS:CMTime = kCMTimeZero;
 
@@ -91,7 +91,9 @@ class DFExporter: NSObject {
             return false;
         }
         let buf:CMSampleBuffer = bufferWithNewTiming!.takeRetainedValue();
-        
+        while(!self.assetWriterInput!.readyForMoreMediaData){
+            
+        }
         if(self.assetWriterInput!.readyForMoreMediaData){
             if(self.assetWriterInput!.appendSampleBuffer(buf)){
                 self.nextPTS = CMTimeAdd(frameDuration, nextPTS);
