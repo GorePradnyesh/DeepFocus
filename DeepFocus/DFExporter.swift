@@ -12,7 +12,7 @@ import UIKit
 import AssetsLibrary
 
 class DFExporter: NSObject {
-    let frameDuration:CMTime = CMTimeMakeWithSeconds(1.0/1.0, 90000);
+    var frameDuration:CMTime = CMTimeMakeWithSeconds(1.0/2.0, 90000);
     
     var nextPTS:CMTime = kCMTimeZero;
 

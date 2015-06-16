@@ -28,7 +28,8 @@ class CaptureController: UIViewController {
     var stillImage:UIImage?;
     var dfSequence:Dictionary<Float, CMSampleBuffer> = Dictionary();
     
-    let focusIncrement = 0.1;
+    let focusIncrement = 0.05;
+    let initialFocus:Float = 0.15;
     
     // MARK: UIViewController overrides
     override func viewDidLoad() {
@@ -153,8 +154,7 @@ class CaptureController: UIViewController {
     
     
     func shootPicture(){
-        // TODO: start from 0.0
-        self.captureDFSequence(0.1);
+        self.captureDFSequence(self.initialFocus);
     }
     
     func captureDFSequence(focusValue:Float){
