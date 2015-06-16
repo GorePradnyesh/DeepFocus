@@ -38,7 +38,6 @@ class DFExporter: NSObject {
             //TODO: Log error
             return false;
         }
-        // TODO: Explore output settings
         self.assetWriterInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: nil);
         self.assetWriterInput!.expectsMediaDataInRealTime = true;
         if(self.assetWriter!.canAddInput(self.assetWriterInput)){
@@ -106,6 +105,13 @@ class DFExporter: NSObject {
     }
     
     func writeToCameraRoll(){
+        
+        self.assetWriterInput!.markAsFinished();
+        self.assetWriter!.endSessionAtSourceTime(self.nextPTS);
+        self.assetWriter!.finishWritingWithCompletionHandler { () -> Void in
+            println("finished writing");
+        };
+        
         var error:NSError?;
         let library = ALAssetsLibrary();
         if(library.videoAtPathIsCompatibleWithSavedPhotosAlbum(self.outputUrl!)){

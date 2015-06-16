@@ -158,7 +158,6 @@ class CaptureController: UIViewController {
     }
     
     func captureDFSequence(focusValue:Float){
-        println("Capturing value for \(focusValue)")
         if(stillImageOutput == nil){
             println("stillImageOutput has not been initialized");
         }
