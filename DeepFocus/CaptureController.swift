@@ -13,6 +13,7 @@ import ImageIO
 import AVFoundation
 
 
+
 class CaptureController: UIViewController {
     
     // MARK: private members
@@ -25,7 +26,7 @@ class CaptureController: UIViewController {
     // variables to store captured media
     var stillImageOutput:AVCaptureStillImageOutput?;
     var stillImage:UIImage?;
-    var dfSequence:Dictionary<Float, UIImage> = Dictionary();
+    var dfSequence:Dictionary<Float, CMSampleBuffer> = Dictionary();
     
     let focusIncrement = 0.1;
     
@@ -177,14 +178,15 @@ class CaptureController: UIViewController {
                         }
                         // TODO: What are exifAttachements ???
                         let exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, nil);
+                        /*
                         if (exifAttachments != nil) {
                             println("attachements: \(exifAttachments)");
                         } else {
                             println("no attachments");
-                        }
+                        }*/
                         
-                        let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageSampleBuffer);
-                        self.dfSequence[focusValue] = UIImage(data: imageData);
+                        //let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageSampleBuffer);
+                        self.dfSequence[focusValue] = imageSampleBuffer;
                         let newFocus = focusValue + Float(self.focusIncrement);
                         self.captureDFSequence(newFocus);
                 });
@@ -211,7 +213,7 @@ class CaptureController: UIViewController {
     }
     
     // MARK: segue
-    func showPresentationController(dfSequence: Dictionary<Float, UIImage>){
+    func showPresentationController(dfSequence: Dictionary<Float, CMSampleBuffer>){
         let collectionViewer = DFCollectionViewer();
         collectionViewer.dfSequence = dfSequence;
         self.navigationController?.pushViewController(collectionViewer, animated: true){

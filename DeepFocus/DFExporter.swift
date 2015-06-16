@@ -9,6 +9,7 @@
 import Foundation
 import AVFoundation
 import UIKit
+import AssetsLibrary
 
 class DFExporter: NSObject {
     let frameDuration:CMTime = CMTimeMakeWithSeconds(1.0/5.0, 90000);
@@ -18,13 +19,13 @@ class DFExporter: NSObject {
     var assetWriter:AVAssetWriter?;
     var assetWriterInput:AVAssetWriterInput?;
     var assetName:String?;
-    var formatDescription:CMFormatDescriptionRef?;
+    var formatDescription:CMFormatDescription?;
     var outputUrl:NSURL?;
     
-    init(formatDescriptionRef:CMFormatDescriptionRef){
+    init(formatDescriptionRef:CMFormatDescription){
         super.init();
         self.assetName = NSUUID().UUIDString;
-        NSURL(fileURLWithPath: String(format: "%@:%lld", NSTemporaryDirectory(), mach_absolute_time()));
+        self.outputUrl = NSURL(fileURLWithPath: String(format: "%@%lld.mov", NSTemporaryDirectory(), mach_absolute_time()));
 
         // Setup assetWriter here
         self.setupAssetWriter();
@@ -39,26 +40,33 @@ class DFExporter: NSObject {
         }
         // TODO: Explore output settings
         self.assetWriterInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: nil);
+        self.assetWriterInput!.expectsMediaDataInRealTime = true;
+        if(self.assetWriter!.canAddInput(self.assetWriterInput)){
+            self.assetWriter!.addInput(self.assetWriterInput)
+        }else{
+            println("Cannot add assetWriterInput to assetWriter");
+        }
         var rotationDegree:CGFloat?;
         
-        switch(UIDevice.currentDevice().orientation){
+        switch UIDevice.currentDevice().orientation
+        {
             case UIDeviceOrientation.PortraitUpsideDown:
-                rotationDegree = -90;
+                rotationDegree = -90.0;
                 break;
             case UIDeviceOrientation.LandscapeLeft:
-                rotationDegree = 0;
+                rotationDegree = 0.0;
                 break;
             case UIDeviceOrientation.LandscapeRight:
-                rotationDegree = 180;
+                rotationDegree = 180.0;
                 break;
             case UIDeviceOrientation.Portrait:
-                rotationDegree = 90;
+                fallthrough;
             case UIDeviceOrientation.Unknown:
-                rotationDegree = 90;
+                fallthrough;
             case UIDeviceOrientation.FaceDown:
-                rotationDegree = 90;
+                fallthrough;
             case UIDeviceOrientation.FaceUp:
-                rotationDegree = 90;
+                fallthrough;
             default:
                 rotationDegree = 90;
         }
@@ -74,7 +82,7 @@ class DFExporter: NSObject {
     }
     
     
-    func writeImageBuffer(sampleBuffer:CMSampleBufferRef)->Bool{
+    func writeImageBuffer(sampleBuffer:CMSampleBuffer)->Bool{
         var timingInfo:CMSampleTimingInfo = kCMTimingInfoInvalid;
         timingInfo.duration = frameDuration;
         timingInfo.presentationTimeStamp = self.nextPTS;
@@ -84,14 +92,38 @@ class DFExporter: NSObject {
             return false;
         }
         let buf:CMSampleBuffer = bufferWithNewTiming!.takeRetainedValue();
-
+        
         if(self.assetWriterInput!.readyForMoreMediaData){
             if(self.assetWriterInput!.appendSampleBuffer(buf)){
                 self.nextPTS = CMTimeAdd(frameDuration, nextPTS);
             }else{
                 NSLog("Failed to append sample buffer");
             }
+        }else{
+            println("AssetWriterInput not ready for more media");
         }
         return true;
+    }
+    
+    func writeToCameraRoll(){
+        var error:NSError?;
+        let library = ALAssetsLibrary();
+        if(library.videoAtPathIsCompatibleWithSavedPhotosAlbum(self.outputUrl!)){
+            println("video is compatible")
+        }else{
+            println("video is NOT compatible");
+            return;
+        }
+        library.writeVideoAtPathToSavedPhotosAlbum(self.outputUrl!, completionBlock: { (assetURL:NSURL!, error:NSError!) -> Void in
+            if(error != nil){
+                NSLog("assets  library operation failed \(error)");
+            }else{
+                var err:NSError?;
+                NSFileManager().removeItemAtURL(self.outputUrl!, error: &err);
+                if(err != nil){
+                    println("error deleting output url : \(err)");
+                }
+            }
+        });
     }
 }

@@ -5,7 +5,7 @@
 //  Created by Pradnyesh Gore on 5/29/15.
 //  Copyright (c) 2015 Pradnyesh Gore. All rights reserved.
 //
-
+import AVFoundation
 import Foundation
 import UIKit
 
@@ -15,7 +15,7 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     // The collection that holds the thumbnails to display
     var sortedFocusList = Array<Float>();
-    var dfSequence:Dictionary<Float, UIImage>?{
+    var dfSequence:Dictionary<Float, CMSampleBuffer>?{
         willSet(newValue){
             if(newValue == nil){
                 return;
@@ -29,6 +29,8 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     var defaultMaxThumbHeight = 150;
     var defaultMaxThumbWidth = 150;
+    
+    var exporter:DFExporter?;
     
     // MARK: UIViewController overrides 
     
@@ -68,7 +70,7 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
         self.view.addConstraints(collectionViewContainerVContraint);
         
         // Add Export button to UINavigationBar
-        let exportButton:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: nil);
+        let exportButton:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "export");
         self.navigationItem.rightBarButtonItem = exportButton;
     }
     
@@ -150,13 +152,31 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     private func getImageForFocus(focusValue:Float) -> UIImage{
-        var thumbnail = self.dfSequence?[focusValue];
+        var imageBuffer = self.dfSequence?[focusValue];
+        var thumbnail = UIImage(data: AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageBuffer));
         if(thumbnail == nil){
             println("Error could not find thumbnail for focus \(focusValue)");
             var errorImage = UIImage(named: "errorImage")
             return errorImage!;
         }
         return thumbnail!;
+    }
+    
+    
+    // MARK: export methods
+    func export(){
+        if(self.exporter == nil){
+            if let firstFocus = self.dfSequence?.keys.array[0]{
+                self.exporter = DFExporter(formatDescriptionRef: CMSampleBufferGetFormatDescription(self.dfSequence![firstFocus]));
+            }else{
+                //TODO: Log error here
+                return;
+            }
+        }
+        for(focus, imageSampleBuffer) in self.dfSequence!{
+            self.exporter!.writeImageBuffer(imageSampleBuffer);
+        }
+        self.exporter!.writeToCameraRoll();
     }
     
 }
