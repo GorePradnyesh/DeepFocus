@@ -66,6 +66,10 @@ class DFCollectionViewer: UIViewController, UICollectionViewDelegateFlowLayout, 
         let collectionViewContainerVContraint:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[\(collectionViewName)]-20-|", options: NSLayoutFormatOptions(0), metrics: nil, views: self.autoLayoutDictionary)
         self.view.addConstraints(collectionViewContainerHContraint);
         self.view.addConstraints(collectionViewContainerVContraint);
+        
+        // Add Export button to UINavigationBar
+        let exportButton:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: nil);
+        self.navigationItem.rightBarButtonItem = exportButton;
     }
     
     override func viewDidLoad() {
