@@ -74,12 +74,24 @@ class DFExporter: NSObject {
     }
     
     
-    func writeImageBuffer(sampleBuffer:CMSampleBufferRef){
+    func writeImageBuffer(sampleBuffer:CMSampleBufferRef)->Bool{
         var timingInfo:CMSampleTimingInfo = kCMTimingInfoInvalid;
         timingInfo.duration = frameDuration;
         timingInfo.presentationTimeStamp = self.nextPTS;
-        var bufferWithNewTiming:CMSampleBufferRef?;
-        //let error = CMSampleBufferCreateCopyWithNewTiming(kCFAllocatorDefault, sampleBuffer, 1, &timingInfo, &bufferWithNewTiming);
-        
+        var bufferWithNewTiming:Unmanaged<CMSampleBuffer>?;
+        let error = CMSampleBufferCreateCopyWithNewTiming(kCFAllocatorDefault, sampleBuffer, 1, &timingInfo, &bufferWithNewTiming);
+        if(error > 0){
+            return false;
+        }
+        let buf:CMSampleBuffer = bufferWithNewTiming!.takeRetainedValue();
+
+        if(self.assetWriterInput!.readyForMoreMediaData){
+            if(self.assetWriterInput!.appendSampleBuffer(buf)){
+                self.nextPTS = CMTimeAdd(frameDuration, nextPTS);
+            }else{
+                NSLog("Failed to append sample buffer");
+            }
+        }
+        return true;
     }
 }
