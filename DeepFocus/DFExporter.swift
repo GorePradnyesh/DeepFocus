@@ -111,27 +111,26 @@ class DFExporter: NSObject {
         self.assetWriterInput!.markAsFinished();
         self.assetWriter!.endSessionAtSourceTime(self.nextPTS);
         self.assetWriter!.finishWritingWithCompletionHandler { () -> Void in
-            println("finished writing");
-        };
-        
-        var error:NSError?;
-        let library = ALAssetsLibrary();
-        if(library.videoAtPathIsCompatibleWithSavedPhotosAlbum(self.outputUrl!)){
-            println("video is compatible")
-        }else{
-            println("video is NOT compatible");
-            return;
-        }
-        library.writeVideoAtPathToSavedPhotosAlbum(self.outputUrl!, completionBlock: { (assetURL:NSURL!, error:NSError!) -> Void in
-            if(error != nil){
-                NSLog("assets  library operation failed \(error)");
+            println("finished writing. Now Exporting")
+            var error:NSError?;
+            let library = ALAssetsLibrary();
+            if(library.videoAtPathIsCompatibleWithSavedPhotosAlbum(self.outputUrl!)){
+                println("video is compatible")
             }else{
-                var err:NSError?;
-                NSFileManager().removeItemAtURL(self.outputUrl!, error: &err);
-                if(err != nil){
-                    println("error deleting output url : \(err)");
-                }
+                println("video is NOT compatible");
+                return;
             }
-        });
+            library.writeVideoAtPathToSavedPhotosAlbum(self.outputUrl!, completionBlock: { (assetURL:NSURL!, error:NSError!) -> Void in
+                if(error != nil){
+                    NSLog("assets  library operation failed \(error)");
+                }else{
+                    var err:NSError?;
+                    NSFileManager().removeItemAtURL(self.outputUrl!, error: &err);
+                    if(err != nil){
+                        println("error deleting output url : \(err)");
+                    }
+                }
+            });
+        };
     }
 }
