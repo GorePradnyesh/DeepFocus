@@ -19,6 +19,7 @@
 		3FBD86D81B124C4A001529E5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FBD86D61B124C4A001529E5 /* LaunchScreen.xib */; };
 		3FBD86E41B124C4B001529E5 /* DeepFocusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86E31B124C4B001529E5 /* DeepFocusTests.swift */; };
 		3FBD86FC1B12B691001529E5 /* CaptureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD86FB1B12B691001529E5 /* CaptureController.swift */; };
+		3FD2B0221B4A3A5200D47985 /* DFCaptureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD2B0211B4A3A5200D47985 /* DFCaptureController.swift */; };
 		3FDD0BC01B16DC1300FD89FB /* EntryStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FDD0BBF1B16DC1300FD89FB /* EntryStoryBoard.storyboard */; };
 		3FDD0BC21B16EBA500FD89FB /* DFPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDD0BC11B16EBA500FD89FB /* DFPresentation.swift */; };
 /* End PBXBuildFile section */
@@ -50,6 +51,7 @@
 		3FBD86E21B124C4B001529E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FBD86E31B124C4B001529E5 /* DeepFocusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepFocusTests.swift; sourceTree = "<group>"; };
 		3FBD86FB1B12B691001529E5 /* CaptureController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureController.swift; sourceTree = "<group>"; };
+		3FD2B0211B4A3A5200D47985 /* DFCaptureController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFCaptureController.swift; sourceTree = "<group>"; };
 		3FDD0BBF1B16DC1300FD89FB /* EntryStoryBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EntryStoryBoard.storyboard; sourceTree = "<group>"; };
 		3FDD0BC11B16EBA500FD89FB /* DFPresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFPresentation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,6 +108,7 @@
 				3FBD86D61B124C4A001529E5 /* LaunchScreen.xib */,
 				3FBD86CB1B124C4A001529E5 /* Supporting Files */,
 				3FBD86FB1B12B691001529E5 /* CaptureController.swift */,
+				3FD2B0211B4A3A5200D47985 /* DFCaptureController.swift */,
 				3FDD0BC11B16EBA500FD89FB /* DFPresentation.swift */,
 				3F7CB7DC1B18DB7E00230F2A /* DFCollectionViewer.swift */,
 				3F7CB7DE1B18DE1B00230F2A /* DFCollectionViewDataSource.swift */,
@@ -245,6 +248,7 @@
 				3FBD86D01B124C4A001529E5 /* ViewController.swift in Sources */,
 				3F29D5DD1B2FAFAB000988AF /* DFExporter.swift in Sources */,
 				3FBD86CE1B124C4A001529E5 /* AppDelegate.swift in Sources */,
+				3FD2B0221B4A3A5200D47985 /* DFCaptureController.swift in Sources */,
 				3F7CB7DD1B18DB7E00230F2A /* DFCollectionViewer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
